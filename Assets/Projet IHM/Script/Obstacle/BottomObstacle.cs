@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BottomObstacle : MonoBehaviour
+public class BottomObstacle : Obstacle
 {
+    /*
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.TryGetComponent<PlayerController>(out PlayerController playerController))
         {
@@ -12,4 +13,13 @@ public class BottomObstacle : MonoBehaviour
             playerController._verticalSpeed = 0;
         }
     }
+    */
+    public override Vector2 Interaction(Vector2 pos, Vector3 localScale, PlayerController playerController)
+    {
+
+        Vector2 newPos = new Vector2(pos.x, transform.position.y - transform.localScale.y/2f - localScale.y/2f);
+        playerController._verticalSpeed = 0;
+        return newPos;
+    }
+
 }
