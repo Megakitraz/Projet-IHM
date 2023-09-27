@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour
     }
     private void CheckPressedKeys()
     {
-        if (Gamepad.current.aButton.ReadValue() == 0)
+        if (!InputManager._jump.IsPressed())
         {
             _lastpressedA = false;
         }
@@ -165,7 +165,7 @@ public class PlayerController : MonoBehaviour
 
         if (_isGrounded)
         {
-            if (Gamepad.current.aButton.ReadValue() > 0f)
+            if (InputManager._jump.IsPressed())
             {
                 _verticalSpeed += _jumpSpeed;
                 
@@ -173,7 +173,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (Gamepad.current.aButton.ReadValue() > 0f && _canDoubleJump && !_lastpressedA)
+            if (InputManager._jump.IsPressed() && _canDoubleJump && !_lastpressedA)
             {
                 _canDoubleJump = false;
                 _verticalSpeed = _jumpSpeed;
@@ -187,13 +187,13 @@ public class PlayerController : MonoBehaviour
     }
     private void Movement()
     {
-        if (Gamepad.current.leftStick.x.ReadValue()>0)
+        if (InputManager._direction.ReadValue<Vector2>().x>0)
         {
             _currentSpeed = _speed;
         }
         
         else 
-            if (Gamepad.current.leftStick.x.ReadValue()<0)
+            if (InputManager._direction.ReadValue<Vector2>().x < 0)
         {
            _currentSpeed = -_speed; 
         }
