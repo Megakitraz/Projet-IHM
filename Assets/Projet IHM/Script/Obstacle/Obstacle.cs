@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
-    public virtual Vector2 Interaction(Vector2 pos, Vector3 localScale, PlayerController playerController) {
+    public virtual Vector2 Interaction(Vector2 pos, Vector3 lossyScale, PlayerController playerController) {
         Debug.Log("Script Obstacle");
         return pos;
     }

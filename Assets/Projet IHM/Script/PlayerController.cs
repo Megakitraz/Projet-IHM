@@ -27,17 +27,18 @@ public class PlayerController : MonoBehaviour
     private void LastMovement(Vector2 wantedPos)
     {
         //Vector2 newWantedPosition = wantedPos;
-        RaycastHit2D hitDownLeft = Physics2D.Raycast(wantedPos + new Vector2(-transform.localScale.x, -transform.localScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x , wantedPos.y-transform.position.y),Vector2.Distance(wantedPos,transform.position), 3);
-        Debug.DrawRay(wantedPos + new Vector2(-transform.localScale.x, -transform.localScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y),Color.red,0.5f,false);
+        Debug.Log(transform.lossyScale);
+        RaycastHit2D hitDownLeft = Physics2D.Raycast(wantedPos + new Vector2(-transform.lossyScale.x, -transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x , wantedPos.y-transform.position.y),Vector2.Distance(wantedPos,transform.position), 3);
+        Debug.DrawRay(wantedPos + new Vector2(-transform.lossyScale.x, -transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y),Color.red,0.5f,false);
 
-        RaycastHit2D hitDownRight = Physics2D.Raycast(wantedPos + new Vector2(transform.localScale.x, -transform.localScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Vector2.Distance(wantedPos, transform.position), 3);
-        Debug.DrawRay(wantedPos + new Vector2(transform.localScale.x, -transform.localScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Color.blue, 0.5f, false);
+        RaycastHit2D hitDownRight = Physics2D.Raycast(wantedPos + new Vector2(transform.lossyScale.x, -transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Vector2.Distance(wantedPos, transform.position), 3);
+        Debug.DrawRay(wantedPos + new Vector2(transform.lossyScale.x, -transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Color.blue, 0.5f, false);
 
-        RaycastHit2D hitUpLeft = Physics2D.Raycast(wantedPos + new Vector2(-transform.localScale.x, transform.localScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Vector2.Distance(wantedPos, transform.position), 3);
-        Debug.DrawRay(wantedPos + new Vector2(-transform.localScale.x, transform.localScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Color.green, 0.5f, false);
+        RaycastHit2D hitUpLeft = Physics2D.Raycast(wantedPos + new Vector2(-transform.lossyScale.x, transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Vector2.Distance(wantedPos, transform.position), 3);
+        Debug.DrawRay(wantedPos + new Vector2(-transform.lossyScale.x, transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Color.green, 0.5f, false);
 
-        RaycastHit2D hitUpRight = Physics2D.Raycast(wantedPos + new Vector2(transform.localScale.x, transform.localScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Vector2.Distance(wantedPos, transform.position), 3);
-        Debug.DrawRay(wantedPos + new Vector2(transform.localScale.x, transform.localScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Color.yellow, 0.5f, false);
+        RaycastHit2D hitUpRight = Physics2D.Raycast(wantedPos + new Vector2(transform.lossyScale.x, transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Vector2.Distance(wantedPos, transform.position), 3);
+        Debug.DrawRay(wantedPos + new Vector2(transform.lossyScale.x, transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Color.yellow, 0.5f, false);
 
         if (hitDownRight.transform != null)
         {
@@ -46,7 +47,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (hitDownRight.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obstacle))
                 {
-                    wantedPos = obstacle.Interaction(wantedPos, transform.localScale, this);
+                    wantedPos = obstacle.Interaction(wantedPos, transform.lossyScale, this);
 
                     if (_lastRaycastHitDownRight2D.transform != null)
                     {
@@ -72,7 +73,7 @@ public class PlayerController : MonoBehaviour
 
             if (hitUpRight.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obstacle))
             {
-                wantedPos = obstacle.Interaction(wantedPos, transform.localScale, this);
+                wantedPos = obstacle.Interaction(wantedPos, transform.lossyScale, this);
 
 
                 if (_lastRaycastHitUpRight2D.transform != null)
@@ -97,7 +98,7 @@ public class PlayerController : MonoBehaviour
 
             if (hitUpLeft.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obstacle))
             {
-                wantedPos = obstacle.Interaction(wantedPos, transform.localScale, this);
+                wantedPos = obstacle.Interaction(wantedPos, transform.lossyScale, this);
 
                 if (_lastRaycastHitUpLeft2D.transform != null)
                 {
@@ -127,7 +128,7 @@ public class PlayerController : MonoBehaviour
                 
                 if (hitDownLeft.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obstacle))
                 {
-                    wantedPos = obstacle.Interaction(wantedPos, transform.localScale, this);
+                    wantedPos = obstacle.Interaction(wantedPos, transform.lossyScale, this);
 
                     // At the end of this if
                     if (_lastRaycastHitDownLeft2D.transform != null)
@@ -222,6 +223,8 @@ public class PlayerController : MonoBehaviour
     }
     private void VerticalMovement()
     {
+
+        if (InputManager._jump == null) return;
         if (_isGrounded) {_verticalSpeed=0;}
         else
         {
@@ -246,13 +249,14 @@ public class PlayerController : MonoBehaviour
         }
         //transform.position = new Vector3(transform.position.x, transform.position.y + _verticalSpeed*Time.deltaTime, transform.position.z);
         //LastMovement(new Vector2(transform.position.x, transform.position.y + _verticalSpeed*Time.deltaTime));
-        _wantedPosition = new Vector2(_wantedPosition.x, _wantedPosition.y + _verticalSpeed * Time.deltaTime);
+        _wantedPosition = new Vector2(_wantedPosition.x, _wantedPosition.y + _verticalSpeed * transform.lossyScale.y * Time.deltaTime);
         //transform.position = new Vector3(transform.position.x, transform.position.y + _verticalSpeed*Time.deltaTime, transform.position.z);
 
     }
     private void Movement()
     {
-        if (InputManager._direction.ReadValue<Vector2>().x>0)
+        if (InputManager._direction == null) return;
+        if (InputManager._direction.ReadValue<Vector2>().x > 0)
         {
             _currentSpeed = _speed;
         }
@@ -268,7 +272,7 @@ public class PlayerController : MonoBehaviour
             }
         //transform.position = new Vector3(transform.position.x + _currentSpeed*Time.deltaTime, transform.position.y, transform.position.z);
         //LastMovement(new Vector2(transform.position.x + _currentSpeed * Time.deltaTime, transform.position.y));
-        _wantedPosition = new Vector2(_wantedPosition.x + _currentSpeed * Time.deltaTime, _wantedPosition.y);
+        _wantedPosition = new Vector2(_wantedPosition.x + _currentSpeed * transform.lossyScale.x * Time.deltaTime, _wantedPosition.y);
     }
 
     void Update()
