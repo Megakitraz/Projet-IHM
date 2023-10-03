@@ -27,45 +27,48 @@ public class PlayerController : MonoBehaviour
     private void LastMovement(Vector2 wantedPos)
     {
         //Vector2 newWantedPosition = wantedPos;
-        Debug.Log(transform.lossyScale);
-        RaycastHit2D hitDownLeft = Physics2D.Raycast(wantedPos + new Vector2(-transform.lossyScale.x, -transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x , wantedPos.y-transform.position.y),Vector2.Distance(wantedPos,transform.position), 3);
+        //Debug.Log(transform.lossyScale);
+        Vector2 position2D = new Vector2(transform.position.x, transform.position.y);
+        RaycastHit2D hitDownLeft = Physics2D.Raycast(position2D + (wantedPos- position2D).normalized/100f + new Vector2(-transform.lossyScale.x, -transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x , wantedPos.y-transform.position.y),Vector2.Distance(wantedPos,transform.position), 3);
         Debug.DrawRay(wantedPos + new Vector2(-transform.lossyScale.x, -transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y),Color.red,0.5f,false);
 
-        RaycastHit2D hitDownRight = Physics2D.Raycast(wantedPos + new Vector2(transform.lossyScale.x, -transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Vector2.Distance(wantedPos, transform.position), 3);
+        RaycastHit2D hitDownRight = Physics2D.Raycast(position2D + (wantedPos - position2D).normalized / 100f + new Vector2(transform.lossyScale.x, -transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Vector2.Distance(wantedPos, transform.position), 3);
         Debug.DrawRay(wantedPos + new Vector2(transform.lossyScale.x, -transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Color.blue, 0.5f, false);
 
-        RaycastHit2D hitUpLeft = Physics2D.Raycast(wantedPos + new Vector2(-transform.lossyScale.x, transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Vector2.Distance(wantedPos, transform.position), 3);
+        RaycastHit2D hitUpLeft = Physics2D.Raycast(position2D + (wantedPos - position2D).normalized / 100f + new Vector2(-transform.lossyScale.x, transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Vector2.Distance(wantedPos, transform.position), 3);
         Debug.DrawRay(wantedPos + new Vector2(-transform.lossyScale.x, transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Color.green, 0.5f, false);
 
-        RaycastHit2D hitUpRight = Physics2D.Raycast(wantedPos + new Vector2(transform.lossyScale.x, transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Vector2.Distance(wantedPos, transform.position), 3);
+        RaycastHit2D hitUpRight = Physics2D.Raycast(position2D + (wantedPos - position2D).normalized / 100f + new Vector2(transform.lossyScale.x, transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Vector2.Distance(wantedPos, transform.position), 3);
         Debug.DrawRay(wantedPos + new Vector2(transform.lossyScale.x, transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Color.yellow, 0.5f, false);
+
+
+
+        // Down Right RayCast2D
 
         if (hitDownRight.transform != null)
         {
-            //Debug.Log("hitDownRight = " + hitDownRight.transform);
-            if (_lastRaycastHitDownRight2D.transform != hitDownRight.transform)
+            if (hitDownRight.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obstacle))
             {
-                if (hitDownRight.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obstacle))
-                {
-                    wantedPos = obstacle.Interaction(wantedPos, transform.lossyScale, this);
-
-                    if (_lastRaycastHitDownRight2D.transform != null)
-                    {
-                        if (_lastRaycastHitDownRight2D.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obscaleExit))
-                        {
-                            obscaleExit.ExitInteraction(this);
-                        }
-                    }
-
-                    
-                }
-
-                _lastRaycastHitDownRight2D = hitDownRight; // At the end of this if
+                wantedPos = obstacle.Interaction(wantedPos, transform.lossyScale, this, hitDownRight);    
             }
 
             
 
         }
+
+        if (_lastRaycastHitDownRight2D.transform != null && _lastRaycastHitDownRight2D.transform != hitDownLeft.transform && _lastRaycastHitDownRight2D.transform != hitDownRight.transform && _lastRaycastHitDownRight2D.transform != hitUpLeft.transform && _lastRaycastHitDownRight2D.transform != hitUpRight.transform)
+        {
+            if (_lastRaycastHitDownRight2D.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obscaleExit))
+            {
+                Debug.Log("Exit Down Right");
+                obscaleExit.ExitInteraction(this);
+            }
+        }
+        
+        
+
+
+        // Up Right RayCast2D
 
         if (hitUpRight.transform != null)
         {
@@ -73,24 +76,29 @@ public class PlayerController : MonoBehaviour
 
             if (hitUpRight.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obstacle))
             {
-                wantedPos = obstacle.Interaction(wantedPos, transform.lossyScale, this);
-
-
-                if (_lastRaycastHitUpRight2D.transform != null)
-                {
-                    if (_lastRaycastHitUpRight2D.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obscaleExit))
-                    {
-                        obscaleExit.ExitInteraction(this);
-                    }
-                }
-
-                _lastRaycastHitUpRight2D = hitUpRight; // At the end of this if
+                wantedPos = obstacle.Interaction(wantedPos, transform.lossyScale, this, hitUpRight);
             }
 
 
         }
 
+        if (_lastRaycastHitUpRight2D.transform != null && 
+            _lastRaycastHitUpRight2D.transform != hitDownLeft.transform && 
+            _lastRaycastHitUpRight2D.transform != hitDownRight.transform && 
+            _lastRaycastHitUpRight2D.transform != hitUpLeft.transform && 
+            _lastRaycastHitUpRight2D.transform != hitUpRight.transform)
+        {
+            if (_lastRaycastHitUpRight2D.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obscaleExit))
+            {
+                obscaleExit.ExitInteraction(this);
+            }
+        }
+        
+        
 
+
+
+        // Up Left RayCast2D
 
         if (hitUpLeft.transform != null)
         {
@@ -98,24 +106,26 @@ public class PlayerController : MonoBehaviour
 
             if (hitUpLeft.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obstacle))
             {
-                wantedPos = obstacle.Interaction(wantedPos, transform.lossyScale, this);
-
-                if (_lastRaycastHitUpLeft2D.transform != null)
-                {
-                    if (_lastRaycastHitUpLeft2D.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obscaleExit))
-                    {
-                        obscaleExit.ExitInteraction(this);
-                    }
-                }
-                _lastRaycastHitUpLeft2D = hitUpLeft; // At the end of this if
-
+                wantedPos = obstacle.Interaction(wantedPos, transform.lossyScale, this , hitUpLeft);
             }
-
-            
-
-
-
         }
+
+        if (_lastRaycastHitUpLeft2D.transform != null &&
+                    _lastRaycastHitUpLeft2D.transform != hitDownLeft.transform &&
+                    _lastRaycastHitUpLeft2D.transform != hitDownRight.transform &&
+                    _lastRaycastHitUpLeft2D.transform != hitUpLeft.transform &&
+                    _lastRaycastHitUpLeft2D.transform != hitUpRight.transform)
+        {
+            if (_lastRaycastHitUpLeft2D.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obscaleExit))
+            {
+                obscaleExit.ExitInteraction(this);
+            }
+        }
+        
+        
+
+
+        // Down Left RayCast2D
 
 
         if (hitDownLeft.transform!=null)
@@ -123,89 +133,82 @@ public class PlayerController : MonoBehaviour
             Debug.Log("hitDownLeft = " + hitDownLeft.transform);
             Debug.Log("_lastRaycastHitDownLeft2D = " + _lastRaycastHitDownLeft2D.transform);
 
-            if (_lastRaycastHitDownLeft2D.transform != hitDownLeft.transform)
+                
+
+            if (hitDownLeft.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obstacle))
             {
-                
-                if (hitDownLeft.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obstacle))
-                {
-                    wantedPos = obstacle.Interaction(wantedPos, transform.lossyScale, this);
-
-                    // At the end of this if
-                    if (_lastRaycastHitDownLeft2D.transform != null)
-                    {
-                        if (_lastRaycastHitDownLeft2D.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obscaleExit))
-                        {
-                            obscaleExit.ExitInteraction(this);
-                        }
-                    }
-
-                    //Debug.Log("Ici");
-                    _lastRaycastHitDownLeft2D = hitDownLeft;
-                }
-                
+                wantedPos = obstacle.Interaction(wantedPos, transform.lossyScale, this, hitDownLeft);
             }
+        }
 
-            
-
+        if (_lastRaycastHitDownLeft2D.transform != null &&
+                    _lastRaycastHitDownLeft2D.transform != hitDownLeft.transform &&
+                    _lastRaycastHitDownLeft2D.transform != hitDownRight.transform &&
+                    _lastRaycastHitDownLeft2D.transform != hitUpLeft.transform &&
+                    _lastRaycastHitDownLeft2D.transform != hitUpRight.transform)
+        {
+            if (_lastRaycastHitDownLeft2D.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obscaleExit))
+            {
+                Debug.Log("Exit Down Left");
+                obscaleExit.ExitInteraction(this);
+            }
         }
         
         
-        
-        if(!(hitDownLeft.transform != null && hitDownRight.transform != null && hitUpLeft.transform != null && hitUpRight.transform != null))
+
+
+
+
+        // No RayCast
+
+        if (hitDownLeft.transform == null && hitDownRight.transform == null && hitUpLeft.transform == null && hitUpRight.transform == null)
         {
             wantedPos = new Vector3(wantedPos.x,wantedPos.y,transform.position.z);
 
             if (_lastRaycastHitDownLeft2D.transform != null)
             {
-                if (_lastRaycastHitDownLeft2D != hitDownLeft)
+                if (_lastRaycastHitDownLeft2D.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obscaleExit))
                 {
-                    if (_lastRaycastHitDownLeft2D.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obscaleExit))
-                    {
-                        obscaleExit.ExitInteraction(this);
-                    }
-                    _lastRaycastHitDownLeft2D = hitDownLeft;
-                }  
+                    obscaleExit.ExitInteraction(this);
+                }
+                _lastRaycastHitDownLeft2D = hitDownLeft;
             }
 
 
             if (_lastRaycastHitDownRight2D.transform != null)
             {
-                if (_lastRaycastHitDownRight2D != hitDownLeft)
-                {
-                    if (_lastRaycastHitDownRight2D.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obscaleExit))
-                    {
-                        obscaleExit.ExitInteraction(this);
-                    }
-                    _lastRaycastHitDownRight2D = hitDownLeft;
-                }
+               if (_lastRaycastHitDownRight2D.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obscaleExit))
+               {
+                   obscaleExit.ExitInteraction(this);
+               }
+               _lastRaycastHitDownRight2D = hitDownLeft;
             }
 
 
             if (_lastRaycastHitUpLeft2D.transform != null)
             {
-                if (_lastRaycastHitUpLeft2D != hitDownLeft)
-                {
-                    if (_lastRaycastHitUpLeft2D.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obscaleExit))
-                    {
-                        obscaleExit.ExitInteraction(this);
-                    }
-                    _lastRaycastHitUpLeft2D = hitDownLeft;
-                }
+               if (_lastRaycastHitUpLeft2D.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obscaleExit))
+               {
+                    obscaleExit.ExitInteraction(this);
+               }
+               _lastRaycastHitUpLeft2D = hitDownLeft;
             }
 
 
             if (_lastRaycastHitUpRight2D.transform != null)
             {
-                if (_lastRaycastHitUpRight2D != hitDownLeft)
+                if (_lastRaycastHitUpRight2D.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obscaleExit))
                 {
-                    if (_lastRaycastHitUpRight2D.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obscaleExit))
-                    {
-                        obscaleExit.ExitInteraction(this);
-                    }
-                    _lastRaycastHitUpRight2D = hitDownLeft;
+                    obscaleExit.ExitInteraction(this);
                 }
+                _lastRaycastHitUpRight2D = hitDownLeft;
             }
         }
+
+        _lastRaycastHitDownRight2D = hitDownRight;
+        _lastRaycastHitUpRight2D = hitUpRight;
+        _lastRaycastHitUpLeft2D = hitUpLeft;
+        _lastRaycastHitDownLeft2D = hitDownLeft;
 
         transform.position = wantedPos;
 
