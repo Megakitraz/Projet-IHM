@@ -9,14 +9,14 @@ public class AllObstacle : Obstacle
     {
         Vector2 newPos = pos;
         _lastSideUsed = SideOfTheObstacle(raycastHit2D.point, raycastHit2D.transform);
-        Debug.Log("Side = " + _lastSideUsed.ToString());
+        //Debug.Log("Side = " + _lastSideUsed.ToString());
 
         switch (_lastSideUsed)
         {
             case Side.Up:
                 playerController._canDoubleJump = true;
                 playerController._isGrounded = true;
-                newPos =  new Vector2(pos.x, transform.position.y + transform.lossyScale.y / 2f + lossyScale.y / 2f);
+                newPos = new Vector2(pos.x, transform.position.y + transform.lossyScale.y / 2f + lossyScale.y * 10000f / 20001f);
                 break;
             case Side.Down:
                 newPos = new Vector2(pos.x, transform.position.y - transform.lossyScale.y / 2f - lossyScale.y / 2f);

@@ -19,7 +19,7 @@ public class Obstacle : MonoBehaviour
         if (obstacle == null) 
         { 
             return Side.None;
-            Debug.Log("None");
+            //Debug.Log("None");
         }
         float distanceUp = Mathf.Abs(position.y - (obstacle.position.y + obstacle.lossyScale.y / 2f));
         float distanceDown = Mathf.Abs(position.y - (obstacle.position.y - obstacle.lossyScale.y / 2f));
