@@ -8,7 +8,7 @@ public class AllObstacle : Obstacle
     public override Vector2 Interaction(Vector2 pos, Vector3 lossyScale, PlayerController playerController, RaycastHit2D raycastHit2D)
     {
         Vector2 newPos = pos;
-        _lastSideUsed = SideOfTheObstacle(raycastHit2D.point, raycastHit2D.transform);
+        _lastSideUsed = SideOfTheObstacle(raycastHit2D.point, newPos , raycastHit2D.transform);
         //Debug.Log("Side = " + _lastSideUsed.ToString());
 
         switch (_lastSideUsed)

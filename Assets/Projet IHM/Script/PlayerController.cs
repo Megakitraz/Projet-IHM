@@ -31,16 +31,16 @@ public class PlayerController : MonoBehaviour
         if (position2D != wantedPos) offset = (wantedPos - position2D).normalized;
 
         RaycastHit2D hitDownLeft = Physics2D.Raycast(position2D + offset / 100f + new Vector2(-transform.lossyScale.x, -transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x , wantedPos.y-transform.position.y),Vector2.Distance(wantedPos,transform.position), 3);
-        Debug.DrawRay(position2D + offset / 100f + new Vector2(-transform.lossyScale.x, -transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y),Color.red,10f,false);
+        Debug.DrawRay(position2D + offset / 100f + new Vector2(-transform.lossyScale.x, -transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y),Color.red,5f,false);
 
         RaycastHit2D hitDownRight = Physics2D.Raycast(position2D + offset / 100f + new Vector2(transform.lossyScale.x, -transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Vector2.Distance(wantedPos, transform.position), 3);
-        Debug.DrawRay(position2D + offset / 100f + new Vector2(transform.lossyScale.x, -transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Color.blue, 10f, false);
+        Debug.DrawRay(position2D + offset / 100f + new Vector2(transform.lossyScale.x, -transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Color.blue, 5f, false);
 
         RaycastHit2D hitUpLeft = Physics2D.Raycast(position2D + offset / 100f + new Vector2(-transform.lossyScale.x, transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Vector2.Distance(wantedPos, transform.position), 3);
-        Debug.DrawRay(position2D + offset / 100f + new Vector2(-transform.lossyScale.x, transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Color.green, 0.5f, false);
+        Debug.DrawRay(position2D + offset / 100f + new Vector2(-transform.lossyScale.x, transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Color.green, 5f, false);
 
         RaycastHit2D hitUpRight = Physics2D.Raycast(position2D + offset / 100f + new Vector2(transform.lossyScale.x, transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Vector2.Distance(wantedPos, transform.position), 3);
-        Debug.DrawRay(position2D + offset / 100f + new Vector2(transform.lossyScale.x, transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Color.yellow, 0.5f, false);
+        Debug.DrawRay(position2D + offset / 100f + new Vector2(transform.lossyScale.x, transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Color.yellow, 5f, false);
 
 
 
@@ -75,7 +75,8 @@ public class PlayerController : MonoBehaviour
 
         // Up Right RayCast2D
 
-        if (hitUpRight.transform != null)
+        if (hitUpRight.transform != null &&
+            hitUpRight.transform != hitDownRight.transform)
         {
             //Debug.Log("hitUPRight = " + hitUpRight.transform);
 
@@ -103,9 +104,12 @@ public class PlayerController : MonoBehaviour
 
 
 
+
         // Up Left RayCast2D
 
-        if (hitUpLeft.transform != null)
+        if (hitUpLeft.transform != null &&
+            hitUpLeft.transform != hitDownRight.transform &&
+            hitUpLeft.transform != hitUpRight.transform)
         {
             //Debug.Log("hitUpLeft = " + hitUpLeft.transform);
 
@@ -133,7 +137,10 @@ public class PlayerController : MonoBehaviour
         // Down Left RayCast2D
 
 
-        if (hitDownLeft.transform!=null)
+        if (hitDownLeft.transform!=null &&
+            hitDownLeft.transform != hitDownRight.transform &&
+            hitDownLeft.transform != hitUpRight.transform &&
+            hitDownLeft.transform != hitUpLeft.transform)
         {
             //Debug.Log("hitDownLeft = " + hitDownLeft.transform);
             //Debug.Log("_lastRaycastHitDownLeft2D = " + _lastRaycastHitDownLeft2D.transform);

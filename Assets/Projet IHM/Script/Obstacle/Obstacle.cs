@@ -14,19 +14,23 @@ public class Obstacle : MonoBehaviour
     public virtual void ExitInteraction(PlayerController playerController) { }
 
 
-    protected Side SideOfTheObstacle(Vector2 position, Transform obstacle)
+    protected Side SideOfTheObstacle(Vector2 positionCollision, Vector2 positionJoueur , Transform obstacle)
     {
         if (obstacle == null) 
         { 
             return Side.None;
             //Debug.Log("None");
         }
-        float distanceUp = Mathf.Abs(position.y - (obstacle.position.y + obstacle.lossyScale.y / 2f));
-        float distanceDown = Mathf.Abs(position.y - (obstacle.position.y - obstacle.lossyScale.y / 2f));
-        float distanceRight = Mathf.Abs(position.x - (obstacle.position.x + obstacle.lossyScale.x / 2f));
-        float distanceLeft = Mathf.Abs(position.x - (obstacle.position.x - obstacle.lossyScale.x / 2f));
+        float distanceUp = Mathf.Abs(positionCollision.y - (obstacle.position.y + obstacle.lossyScale.y / 2f));
+        float distanceDown = Mathf.Abs(positionCollision.y - (obstacle.position.y - obstacle.lossyScale.y / 2f));
+        float distanceRight = Mathf.Abs(positionCollision.x - (obstacle.position.x + obstacle.lossyScale.x / 2f));
+        float distanceLeft = Mathf.Abs(positionCollision.x - (obstacle.position.x - obstacle.lossyScale.x / 2f));
 
-        //float minDistance = Mathf.Min(Mathf.Min(distanceUp, distanceDown),Mathf.Min(distanceRight, distanceLeft));
+        float distanceUpJoueur = Mathf.Abs(positionJoueur.y - (obstacle.position.y + obstacle.lossyScale.y / 2f));
+        float distanceDownJoueur = Mathf.Abs(positionJoueur.y - (obstacle.position.y - obstacle.lossyScale.y / 2f));
+        float distanceRightJoueur = Mathf.Abs(positionJoueur.x - (obstacle.position.x + obstacle.lossyScale.x / 2f));
+        float distanceLeftJoueur = Mathf.Abs(positionJoueur.x - (obstacle.position.x - obstacle.lossyScale.x / 2f));
+
         float minDistance = distanceUp;
         Side collisionSide = Side.Up;
         if(minDistance > distanceDown)
@@ -44,9 +48,34 @@ public class Obstacle : MonoBehaviour
             minDistance = distanceRight;
             collisionSide = Side.Right;
         }
+
+        switch (collisionSide)
+        {
+            case Side.Up:
+                if (distanceUp == distanceLeft && distanceUpJoueur > distanceLeftJoueur) { 
+                    collisionSide = Side.Left;
+                    Debug.Log("Coin Left");
+                }
+                if (distanceUp == distanceRight && distanceUpJoueur > distanceRightJoueur) collisionSide = Side.Right;
+                break;
+            case Side.Down:
+                if (distanceDown == distanceLeft && distanceDownJoueur > distanceLeftJoueur) collisionSide = Side.Left;
+                if (distanceDown == distanceRight && distanceDownJoueur > distanceRightJoueur) collisionSide = Side.Right;
+                break;
+            case Side.Left:
+                if (distanceLeft == distanceUp && distanceLeftJoueur > distanceUpJoueur) { 
+                    collisionSide = Side.Up;
+                    Debug.Log("Coin Up");
+                }
+                if (distanceLeft == distanceDown && distanceLeftJoueur > distanceDownJoueur) collisionSide = Side.Down;
+                break;
+            case Side.Right:
+                if (distanceRight == distanceUp && distanceRightJoueur > distanceUpJoueur) collisionSide = Side.Up;
+                if (distanceRight == distanceDown && distanceRightJoueur > distanceDownJoueur) collisionSide = Side.Down;
+                break;
+        }
+        Debug.Log("collisionSide = " + collisionSide);
         return collisionSide;
-
-
 
     }
 }
