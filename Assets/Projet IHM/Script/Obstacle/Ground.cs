@@ -6,7 +6,7 @@ public class Ground : Obstacle
 {
 
 
-    public override Vector2 Interaction(Vector2 pos, Vector3 lossyScale, PlayerController playerController, RaycastHit2D raycastHit2D)
+    public override Vector2 Interaction(Vector2 pos, Vector3 lossyScale, PlayerController playerController, RaycastHit2D raycastHit2D, Side UpDown, Side RightLeft)
     {
             Debug.Log("Enter");
             playerController._canDoubleJump = true;
