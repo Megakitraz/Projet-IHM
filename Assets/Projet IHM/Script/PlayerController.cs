@@ -246,7 +246,6 @@ public class PlayerController : MonoBehaviour
     }
     private void VerticalMovement()
     {
-
         if (InputManager._jump == null) return;
         if (_isGrounded) {_verticalSpeed=0;}
         else
@@ -276,6 +275,17 @@ public class PlayerController : MonoBehaviour
         //transform.position = new Vector3(transform.position.x, transform.position.y + _verticalSpeed*Time.deltaTime, transform.position.z);
 
     }
+
+
+
+    public void ForcedJump(float jumpPower)
+    {
+        Debug.Log("ForcedJump");
+        _verticalSpeed = _jumpSpeed * jumpPower;
+        //_wantedPosition = new Vector2(_wantedPosition.x, _wantedPosition.y + _jumpSpeed * jumpPower * transform.lossyScale.y * Time.deltaTime);
+    }
+
+
     private void Movement()
     {
         if (InputManager._direction == null) return;
