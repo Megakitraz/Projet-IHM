@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public float _speed;
+    public float _maxSpeed;
     public float _currentSpeed;
     public float _gravity;
     public float _jumpSpeed;
@@ -21,6 +22,13 @@ public class PlayerController : MonoBehaviour
     public bool _lastpressedA = false;
 
     private Vector2 _wantedPosition;
+
+    [SerializeField] private float _inertieTime;
+    [SerializeField] private float _currentInertie;
+    [SerializeField] private float _dashPower;
+    [SerializeField] private float _dashCooldown;
+    [SerializeField] private float _dashDuration;
+    private float _timeLastDash;
 
 
     private void LastMovement(Vector2 wantedPos)
@@ -111,12 +119,13 @@ public class PlayerController : MonoBehaviour
 
         // Up Right RayCast2D
 
-        if (hitUpRight.transform != null &&
-            hitUpRight.transform != _lastRaycastHitDownRight2D.transform &&
-            hitUpLeft.transform != _lastRaycastHitDownLeft2D.transform &&
-            hitUpLeft.transform != _lastRaycastHitUpLeft2D.transform)
+        if (hitUpRight.transform != null 
+            //hitUpRight.transform != _lastRaycastHitDownRight2D.transform &&
+            //hitUpLeft.transform != _lastRaycastHitDownLeft2D.transform &&
+            //hitUpLeft.transform != _lastRaycastHitUpLeft2D.transform
+            )
         {
-            //Debug.Log("hitUPRight = " + hitUpRight.transform);
+            Debug.Log("hitUPRight = " + hitUpRight.transform);
 
             if (hitUpRight.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obstacle))
             {
@@ -145,10 +154,11 @@ public class PlayerController : MonoBehaviour
 
         // Up Left RayCast2D
 
-        if (hitUpLeft.transform != null &&
-            hitUpRight.transform != _lastRaycastHitDownRight2D.transform &&
-            hitUpLeft.transform != _lastRaycastHitDownLeft2D.transform &&
-            hitUpLeft.transform != _lastRaycastHitUpRight2D.transform)
+        if (hitUpLeft.transform != null 
+            //hitUpRight.transform != _lastRaycastHitDownRight2D.transform &&
+            //hitUpLeft.transform != _lastRaycastHitDownLeft2D.transform &&
+            //hitUpLeft.transform != _lastRaycastHitUpRight2D.transform
+            )
         {
             //Debug.Log("hitUpLeft = " + hitUpLeft.transform);
 
@@ -289,24 +299,107 @@ public class PlayerController : MonoBehaviour
 
     private void Movement()
     {
-        if (InputManager._direction == null) return;
-        if (InputManager._direction.ReadValue<Vector2>().x > 0)
-        {
-            _currentSpeed = _speed;
-        }
         
-        else 
-            if (InputManager._direction.ReadValue<Vector2>().x < 0)
+        if (InputManager._direction == null) return;
+
+
+        float InputDirection = InputManager._direction.ReadValue<Vector2>().x;
+        bool InputDash = false;
+
+        if (InputManager._dash.IsPressed() && (Time.realtimeSinceStartup - _timeLastDash) > _dashCooldown)
         {
-           _currentSpeed = -_speed; 
+            Debug.Log("Time since last dash = " + (Time.realtimeSinceStartup - _timeLastDash));
+            InputDash = true;
+            _timeLastDash = Time.realtimeSinceStartup;
+            
         }
-            else 
+
+
+        if (InputDash || Time.realtimeSinceStartup - _timeLastDash <= _dashDuration)
+        {
+
+            if(Time.realtimeSinceStartup - _timeLastDash == 0)
             {
-                _currentSpeed = 0;
+                if (InputDirection > 0)
+                {
+                    _currentInertie = 1;
+                }
+                else if (InputDirection < 0)
+                {
+                    _currentInertie = -1;
+                }
+                else
+                {
+                    _currentInertie = 0;
+                }
             }
-        //transform.position = new Vector3(transform.position.x + _currentSpeed*Time.deltaTime, transform.position.y, transform.position.z);
-        //LastMovement(new Vector2(transform.position.x + _currentSpeed * Time.deltaTime, transform.position.y));
+            else
+            {
+                if (InputDirection > 0)
+                {
+                    _currentInertie += Time.deltaTime / _inertieTime;
+                }
+                else if (InputDirection < 0)
+                {
+                    _currentInertie -= Time.deltaTime / _inertieTime;
+                }
+                else
+                {
+                    if (_currentInertie > 0)
+                    {
+                        _currentInertie -= Time.deltaTime / _inertieTime;
+                        if (_currentInertie < 0) _currentInertie = 0f;
+                    }
+                    else if (_currentInertie < 0)
+                    {
+                        _currentInertie += Time.deltaTime / _inertieTime;
+                        if (_currentInertie > 0) _currentInertie = 0f;
+                    }
+                }
+
+                _currentInertie = Mathf.Clamp(_currentInertie, -(0.5f + Mathf.Abs(InputDirection) / 2f), 0.5f + Mathf.Abs(InputDirection) / 2f);
+            }
+            
+
+            _currentSpeed = Mathf.Lerp(-1 , 1, 0.5f + _currentInertie / 2f) * _maxSpeed * _dashPower;
+        }
+        else
+        {
+            if (InputDirection > 0)
+            {
+                _currentInertie += Time.deltaTime / _inertieTime;
+            }
+            else if (InputDirection < 0)
+            {
+                _currentInertie -= Time.deltaTime / _inertieTime;
+            }
+            else
+            {
+                if (_currentInertie > 0)
+                {
+                    _currentInertie -= Time.deltaTime / _inertieTime;
+                    if (_currentInertie < 0) _currentInertie = 0f;
+                }
+                else if (_currentInertie < 0)
+                {
+                    _currentInertie += Time.deltaTime / _inertieTime;
+                    if (_currentInertie > 0) _currentInertie = 0f;
+                }
+            }
+
+            _currentInertie = Mathf.Clamp(_currentInertie, - (0.5f + Mathf.Abs(InputDirection)/2f), 0.5f + Mathf.Abs(InputDirection) / 2f);
+
+            _currentSpeed = Mathf.Lerp(-1 , 1, 0.5f + _currentInertie / 2f) * _maxSpeed;
+        }
+
+
         _wantedPosition = new Vector2(_wantedPosition.x + _currentSpeed * transform.lossyScale.x * Time.deltaTime, _wantedPosition.y);
+    }
+
+    private void Start()
+    {
+        _currentInertie = 0;
+        _timeLastDash = -_dashCooldown;
     }
 
     void Update()

@@ -74,7 +74,7 @@ public class Obstacle : MonoBehaviour
                 if (distanceRight == distanceDown && distanceRightJoueur > distanceDownJoueur) collisionSide = Side.Down;
                 break;
         }
-        Debug.Log("collisionSide = " + collisionSide);
+        //Debug.Log("collisionSide = " + collisionSide);
         return collisionSide;
 
     }

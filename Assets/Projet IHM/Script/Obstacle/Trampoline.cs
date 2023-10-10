@@ -28,6 +28,7 @@ public class Trampoline : Obstacle
         switch (_lastSideUsed)
         {
             case Side.Up:
+                if (UpDown != Side.Down) break;
                 playerController._canDoubleJump = true;
                 playerController._isOnTrampoline = true;
                 if (!_animationTrampolineIsRunning) _coroutineAnimationTrampoline = StartCoroutine(AnimationTrampoline(playerController, lossyScale));
@@ -37,13 +38,16 @@ public class Trampoline : Obstacle
                 newPos = new Vector2(pos.x, transform.position.y + transform.lossyScale.y / 2f + lossyScale.y * 10000f / 20001f);
                 break;
             case Side.Down:
+                if (UpDown != Side.Up) break;
                 newPos = new Vector2(pos.x, transform.position.y - transform.lossyScale.y / 2f - lossyScale.y / 2f);
                 playerController._verticalSpeed = 0;
                 break;
             case Side.Left:
+                if (RightLeft != Side.Right) break;
                 newPos = new Vector2(transform.position.x - transform.lossyScale.x / 2f - lossyScale.x / 2f, pos.y);
                 break;
             case Side.Right:
+                if (RightLeft != Side.Left) break;
                 newPos = new Vector2(transform.position.x + transform.lossyScale.x / 2f + lossyScale.x / 2f, pos.y);
                 break;
         }
