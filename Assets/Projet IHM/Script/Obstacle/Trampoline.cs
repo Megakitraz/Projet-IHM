@@ -8,6 +8,7 @@ public class Trampoline : Obstacle
     [SerializeField] private float _trampolinePower = 5f;
     [SerializeField] private AnimationCurve _animationTrampolineCurve;
     [SerializeField] private float _animationTime = 0.25f;
+    [SerializeField] private string _soundName;
 
     private Coroutine _coroutineAnimationTrampoline;
     private bool _isOnTrampoline;
@@ -31,6 +32,7 @@ public class Trampoline : Obstacle
                 playerController._isOnTrampoline = true;
                 if (!_animationTrampolineIsRunning) _coroutineAnimationTrampoline = StartCoroutine(AnimationTrampoline(playerController, lossyScale));
                 //StartCoroutine(AnimationTrampoline(playerController, lossyScale));
+                FindObjectOfType<AudioManager>().Play(_soundName);
                 Debug.Log("jumpPower Activate");
                 newPos = new Vector2(pos.x, transform.position.y + transform.lossyScale.y / 2f + lossyScale.y * 10000f / 20001f);
                 break;
