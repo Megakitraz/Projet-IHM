@@ -16,11 +16,9 @@ public class Trampoline : Obstacle
     private void Start()
     {
         _animationTrampolineIsRunning = false;
-        _isOnTrampoline = false;
     }
     public override Vector2 Interaction(Vector2 pos, Vector3 lossyScale, PlayerController playerController, RaycastHit2D raycastHit2D, Side UpDown, Side RightLeft)
     {
-        _isOnTrampoline = true;
         Vector2 newPos = pos;
         _lastSideUsed = SideOfTheObstacle(raycastHit2D.point, newPos, raycastHit2D.transform);
         //Debug.Log("Side = " + _lastSideUsed.ToString());
@@ -30,7 +28,7 @@ public class Trampoline : Obstacle
         {
             case Side.Up:
                 playerController._canDoubleJump = true;
-                playerController._isGrounded = true;
+                playerController._isOnTrampoline = true;
                 if (!_animationTrampolineIsRunning) _coroutineAnimationTrampoline = StartCoroutine(AnimationTrampoline(playerController, lossyScale));
                 //StartCoroutine(AnimationTrampoline(playerController, lossyScale));
                 Debug.Log("jumpPower Activate");
@@ -66,15 +64,15 @@ public class Trampoline : Obstacle
             currentTime = Time.time - initTime;
 
             transform.position = new Vector3(transform.position.x, initPosY + _animationTrampolineCurve.Evaluate(currentTime / _animationTime), transform.position.z);
-            if (_isOnTrampoline) transformPlayer.Translate(transform.position-lastPosition);
+            if (playerController._isOnTrampoline) transformPlayer.Translate(transform.position-lastPosition);
             yield return new WaitForEndOfFrame();
         }
 
         transform.position = new Vector3(transform.position.x, initPosY, transform.position.z);
 
-        if (_isOnTrampoline) 
+        if (playerController._isOnTrampoline) 
         {
-            playerController._isGrounded = false;
+            playerController._isOnTrampoline = false;
             playerController.ForcedJump(_trampolinePower);
         }
         _animationTrampolineIsRunning = false;
@@ -87,7 +85,6 @@ public class Trampoline : Obstacle
 
         //if (_lastSideUsed == Side.Up) playerController._isGrounded = false;
 
-        _isOnTrampoline = false;
-        playerController._isGrounded = false;
+        playerController._isOnTrampoline = false;
     }
 }

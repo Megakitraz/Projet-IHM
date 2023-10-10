@@ -9,7 +9,8 @@ public class PlayerController : MonoBehaviour
     public float _currentSpeed;
     public float _gravity;
     public float _jumpSpeed;
-    public bool _isGrounded = false; //todo
+    public bool _isGrounded = false;
+    public bool _isOnTrampoline = false;//todo
     public float _verticalSpeed;
     public bool _canDoubleJump = true;
     public RaycastHit2D _lastRaycastHitDownLeft2D;
@@ -247,13 +248,13 @@ public class PlayerController : MonoBehaviour
     private void VerticalMovement()
     {
         if (InputManager._jump == null) return;
-        if (_isGrounded) {_verticalSpeed=0;}
+        if (_isGrounded || _isOnTrampoline) {_verticalSpeed=0;}
         else
         {
             _verticalSpeed -= _gravity*Time.deltaTime;
         }
 
-        if (_isGrounded)
+        if (_isGrounded || _isOnTrampoline)
         {
             if (InputManager._jump.IsPressed())
             {

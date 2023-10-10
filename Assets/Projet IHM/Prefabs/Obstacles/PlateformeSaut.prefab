@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 206331114437704261}
   - component: {fileID: 4202099294142197098}
   m_Layer: 0
-  m_Name: Trampoline
+  m_Name: PlateformeSaut
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4437304918286298960
 SpriteRenderer:
@@ -143,4 +143,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86ee84aa521a55245a19d035ef8427a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _trampolinePower: 5
+  _trampolinePower: 2
+  _animationTrampolineCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: -0.5
+      outSlope: -0.5
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: -0.25
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0.5
+      outSlope: 0.5
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _animationTime: 0.25
