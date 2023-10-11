@@ -177,6 +177,7 @@ MonoBehaviour:
   _speed: 1
   _left: {fileID: 7623573806581050953}
   _right: {fileID: 843272384200166710}
+  _wallJumpPower: 1.5
   _goRightFirst: 1
   _speedCurve:
     serializedVersion: 2

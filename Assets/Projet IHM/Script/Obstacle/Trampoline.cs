@@ -34,7 +34,7 @@ public class Trampoline : Obstacle
                 if (!_animationTrampolineIsRunning) _coroutineAnimationTrampoline = StartCoroutine(AnimationTrampoline(playerController, lossyScale));
                 //StartCoroutine(AnimationTrampoline(playerController, lossyScale));
                 FindObjectOfType<AudioManager>().Play(_soundName);
-                Debug.Log("jumpPower Activate");
+                //Debug.Log("jumpPower Activate");
                 newPos = new Vector2(pos.x, transform.position.y + transform.lossyScale.y / 2f + lossyScale.y * 10000f / 20001f);
                 break;
             case Side.Down:
@@ -91,6 +91,6 @@ public class Trampoline : Obstacle
 
         //if (_lastSideUsed == Side.Up) playerController._isGrounded = false;
 
-        playerController._isOnTrampoline = false;
+        if (_lastSideUsed == Side.Up) playerController._isOnTrampoline = false;
     }
 }

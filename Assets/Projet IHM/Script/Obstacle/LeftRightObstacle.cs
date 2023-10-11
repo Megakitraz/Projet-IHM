@@ -51,10 +51,14 @@ public class LeftRightObstacle : Obstacle
                 break;
             case Side.Left:
                 if (RightLeft != Side.Right) break;
+                playerController._isOnWall = true;
+                playerController.WallJump(Side.Left);
                 newPos = new Vector2(transform.position.x - transform.lossyScale.x / 2f - lossyScale.x / 2f, pos.y);
                 break;
             case Side.Right:
                 if (RightLeft != Side.Left) break;
+                playerController._isOnWall = true;
+                playerController.WallJump(Side.Right);
                 newPos = new Vector2(transform.position.x + transform.lossyScale.x / 2f + lossyScale.x / 2f, pos.y);
                 break;
         }
@@ -106,17 +110,15 @@ public class LeftRightObstacle : Obstacle
 
 
         if(_lastSideUsed == Side.Up) playerController._isGrounded = false;
+        playerController._isOnWall = false;
+
         if (_coroutinePlayerFollowMovement != null)
         {
             StopCoroutine(_coroutinePlayerFollowMovement);
             _coroutinePlayerFollowMovement = null;
         }
-        /*
-        if (_coroutinePlayerFollowMovement.Current != null)
-        { 
-            StopCoroutine(_coroutinePlayerFollowMovement);
-            _coroutinePlayerFollowMovement = null;
-        }
-        */
+
+
+        
     }
 }

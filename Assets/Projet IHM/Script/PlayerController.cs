@@ -11,15 +11,14 @@ public class PlayerController : MonoBehaviour
     public float _gravity;
     public float _jumpSpeed;
     public bool _isGrounded = false;
-    public bool _isOnTrampoline = false;//todo
+    public bool _isOnTrampoline = false;
+    public bool _isOnWall = false;//todo
     public float _verticalSpeed;
     public bool _canDoubleJump = true;
     public RaycastHit2D _lastRaycastHitDownLeft2D;
     public RaycastHit2D _lastRaycastHitDownRight2D;
     public RaycastHit2D _lastRaycastHitUpLeft2D;
     public RaycastHit2D _lastRaycastHitUpRight2D;
-
-    public bool _lastpressedA = false;
 
     private Vector2 _wantedPosition;
 
@@ -29,6 +28,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _dashCooldown;
     [SerializeField] private float _dashDuration;
     private float _timeLastDash;
+
+
+    [SerializeField] private float _wallJumpDuration;
+    private float _timeLastWallJump;
+    [SerializeField] private float _wallJumpPower;
+    [SerializeField] private float _wallJumpDashOutPower;
+    [SerializeField] private float _fallSpeedOnWall;
+    private Obstacle.Side _leftRightWallJump;
 
 
     private void LastMovement(Vector2 wantedPos)
@@ -58,7 +65,6 @@ public class PlayerController : MonoBehaviour
         if (hitDownRight.transform != null &&
             hitDownRight.transform != _lastRaycastHitDownLeft2D.transform)
         {
-            Debug.Log("hitDownRight = " + hitDownRight.transform);
 
             if (hitDownRight.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obstacle))
             {
@@ -246,21 +252,26 @@ public class PlayerController : MonoBehaviour
         transform.position = wantedPos;
 
     }
-    private void CheckPressedKeys()
-    {
-        if (!InputManager._jump.IsPressed())
-        {
-            _lastpressedA = false;
-        }
-        else
-        {
-            _lastpressedA = true;
-        }
-    }
+
     private void VerticalMovement()
     {
         if (InputManager._jump == null) return;
-        if (_isGrounded || _isOnTrampoline) {_verticalSpeed=0;}
+        if (_isGrounded || _isOnTrampoline)
+        {
+            _verticalSpeed=0;
+        }
+        else if(_isOnWall)
+        {
+            if(_verticalSpeed > 0)
+            {
+                _verticalSpeed -= _gravity * Time.deltaTime;
+            }
+            else
+            {
+                _verticalSpeed -= _gravity * Time.deltaTime * Mathf.Abs(_fallSpeedOnWall);
+            }
+            
+        }
         else
         {
             _verticalSpeed -= _gravity*Time.deltaTime;
@@ -268,24 +279,30 @@ public class PlayerController : MonoBehaviour
 
         if (_isGrounded || _isOnTrampoline)
         {
-            if (InputManager._jump.IsPressed())
+            if (InputManager._jumpKeyDown)
             {
                 _verticalSpeed += _jumpSpeed;
                 
             }
         }
+        else if (_isOnWall)
+        {
+            if (InputManager._jumpKeyDown)
+            {
+                _verticalSpeed = _jumpSpeed;
+            };
+        }
         else
         {
-            if (InputManager._jump.IsPressed() && _canDoubleJump && !_lastpressedA)
+            if (InputManager._jumpKeyDown && _canDoubleJump)
             {
                 _canDoubleJump = false;
                 _verticalSpeed = _jumpSpeed;
             }
         }
-        //transform.position = new Vector3(transform.position.x, transform.position.y + _verticalSpeed*Time.deltaTime, transform.position.z);
-        //LastMovement(new Vector2(transform.position.x, transform.position.y + _verticalSpeed*Time.deltaTime));
+
+
         _wantedPosition = new Vector2(_wantedPosition.x, _wantedPosition.y + _verticalSpeed * transform.lossyScale.y * Time.deltaTime);
-        //transform.position = new Vector3(transform.position.x, transform.position.y + _verticalSpeed*Time.deltaTime, transform.position.z);
 
     }
 
@@ -293,9 +310,19 @@ public class PlayerController : MonoBehaviour
 
     public void ForcedJump(float jumpPower)
     {
-        Debug.Log("ForcedJump");
+        //Debug.Log("ForcedJump");
         _verticalSpeed = _jumpSpeed * jumpPower;
         //_wantedPosition = new Vector2(_wantedPosition.x, _wantedPosition.y + _jumpSpeed * jumpPower * transform.lossyScale.y * Time.deltaTime);
+    }
+
+    public void WallJump(Obstacle.Side leftRight)
+    {
+        if (InputManager._jumpKeyDown)
+        {
+            _leftRightWallJump = leftRight;
+            _verticalSpeed = _jumpSpeed * _wallJumpPower;
+            _timeLastWallJump = Time.realtimeSinceStartup;
+        }
     }
 
 
@@ -308,16 +335,63 @@ public class PlayerController : MonoBehaviour
         float InputDirection = InputManager._direction.ReadValue<Vector2>().x;
         bool InputDash = false;
 
-        if (InputManager._dash.IsPressed() && (Time.realtimeSinceStartup - _timeLastDash) > _dashCooldown)
+        if (InputManager._dashKeyDown && (Time.realtimeSinceStartup - _timeLastDash) > _dashCooldown)
         {
-            Debug.Log("Time since last dash = " + (Time.realtimeSinceStartup - _timeLastDash));
+            //Debug.Log("Time since last dash = " + (Time.realtimeSinceStartup - _timeLastDash));
             InputDash = true;
             _timeLastDash = Time.realtimeSinceStartup;
             
         }
 
+        if (Time.realtimeSinceStartup - _timeLastWallJump <= _wallJumpDuration)
+        {
 
-        if (InputDash || Time.realtimeSinceStartup - _timeLastDash <= _dashDuration)
+            if (Time.realtimeSinceStartup - _timeLastWallJump <= _wallJumpDuration / 4f)
+            {
+                if (_leftRightWallJump == Obstacle.Side.Right)
+                {
+                    _currentInertie = 1;
+                }
+                else if (_leftRightWallJump == Obstacle.Side.Left)
+                {
+                    _currentInertie = -1;
+                }
+                else
+                {
+                    _currentInertie = 0;
+                }
+            }
+            else
+            {
+                if (_leftRightWallJump == Obstacle.Side.Right)
+                {
+                    _currentInertie += Time.deltaTime / _inertieTime;
+                }
+                else if (_leftRightWallJump == Obstacle.Side.Left)
+                {
+                    _currentInertie -= Time.deltaTime / _inertieTime;
+                }
+                else
+                {
+                    if (_currentInertie > 0)
+                    {
+                        _currentInertie -= Time.deltaTime / _inertieTime;
+                        if (_currentInertie < 0) _currentInertie = 0f;
+                    }
+                    else if (_currentInertie < 0)
+                    {
+                        _currentInertie += Time.deltaTime / _inertieTime;
+                        if (_currentInertie > 0) _currentInertie = 0f;
+                    }
+                }
+
+                _currentInertie = Mathf.Clamp(_currentInertie, -1f, 1f);
+            }
+
+
+            _currentSpeed = Mathf.Lerp(-1, 1, 0.5f + _currentInertie / 2f) * _maxSpeed * _wallJumpDashOutPower;
+        }
+        else if (InputDash || Time.realtimeSinceStartup - _timeLastDash <= _dashDuration)
         {
 
             if(Time.realtimeSinceStartup - _timeLastDash == 0)
@@ -409,7 +483,6 @@ public class PlayerController : MonoBehaviour
         _wantedPosition = transform.position;
         Movement();
         VerticalMovement();
-        CheckPressedKeys();
     }
 
     private void LateUpdate()
