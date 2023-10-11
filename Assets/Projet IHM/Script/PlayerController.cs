@@ -58,6 +58,8 @@ public class PlayerController : MonoBehaviour
         if (hitDownRight.transform != null &&
             hitDownRight.transform != _lastRaycastHitDownLeft2D.transform)
         {
+            Debug.Log("hitDownRight = " + hitDownRight.transform);
+
             if (hitDownRight.transform.gameObject.TryGetComponent<Obstacle>(out Obstacle obstacle))
             {
                 wantedPos = obstacle.Interaction(wantedPos, transform.lossyScale, this, hitDownRight, Obstacle.Side.Down, Obstacle.Side.Right);    
