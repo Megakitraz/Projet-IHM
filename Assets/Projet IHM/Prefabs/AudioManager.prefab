@@ -49,3 +49,15 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: b325da846e513464c9574fa02c7cca38, type: 3}
     volume: 1
     source: {fileID: 0}
+  - name: death
+    clip: {fileID: 8300000, guid: 722da9f2cbf90624196e3f985ee1fe1c, type: 3}
+    volume: 1
+    source: {fileID: 0}
+  - name: jump
+    clip: {fileID: 8300000, guid: 691110a30edaf0d4eb5004d7e9281a64, type: 3}
+    volume: 1
+    source: {fileID: 0}
+  - name: jump double
+    clip: {fileID: 8300000, guid: 2b6e099eae38e2c4e9f89718509e7231, type: 3}
+    volume: 1
+    source: {fileID: 0}
