@@ -37,6 +37,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _fallSpeedOnWall;
     private Obstacle.Side _leftRightWallJump;
 
+    public Vector2 _directionMovement;
+
 
     private void LastMovement(Vector2 wantedPos)
     {
@@ -44,18 +46,23 @@ public class PlayerController : MonoBehaviour
         //Debug.Log(transform.lossyScale);
         Vector2 position2D = new Vector2(transform.position.x, transform.position.y);
         Vector2 offset = new Vector2(0f, 0f);
+        Vector2 directionUpMovement = new Vector2(Vector3.Cross(_directionMovement, Vector3.forward).x, Vector3.Cross(_directionMovement, Vector3.forward).y);
         if (position2D != wantedPos) offset = (wantedPos - position2D).normalized;
 
         RaycastHit2D hitDownLeft = Physics2D.Raycast(position2D + offset / 100f + new Vector2(-transform.lossyScale.x, -transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x , wantedPos.y-transform.position.y),Vector2.Distance(wantedPos,transform.position), 3);
-        Debug.DrawRay(position2D + offset / 100f + new Vector2(-transform.lossyScale.x, -transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y),Color.red,0.5f,false);
+        //RaycastHit2D hitDownLeft = Physics2D.Raycast(position2D + offset / 100f + (-transform.lossyScale.x * _directionMovement - transform.lossyScale.y * directionUpMovement) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Vector2.Distance(wantedPos, transform.position), 3);
+        Debug.DrawRay(position2D + offset / 100f + new Vector2(-transform.lossyScale.x, -transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Color.red, 0.5f, false);
 
         RaycastHit2D hitDownRight = Physics2D.Raycast(position2D + offset / 100f + new Vector2(transform.lossyScale.x, -transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Vector2.Distance(wantedPos, transform.position), 3);
+        //RaycastHit2D hitDownRight = Physics2D.Raycast(position2D + offset / 100f + (transform.lossyScale.x * _directionMovement - transform.lossyScale.y * directionUpMovement) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Vector2.Distance(wantedPos, transform.position), 3);
         Debug.DrawRay(position2D + offset / 100f + new Vector2(transform.lossyScale.x, -transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Color.blue, 0.5f, false);
 
         RaycastHit2D hitUpLeft = Physics2D.Raycast(position2D + offset / 100f + new Vector2(-transform.lossyScale.x, transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Vector2.Distance(wantedPos, transform.position), 3);
+        //RaycastHit2D hitUpLeft = Physics2D.Raycast(position2D + offset / 100f + (-transform.lossyScale.x * _directionMovement + transform.lossyScale.y * directionUpMovement) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Vector2.Distance(wantedPos, transform.position), 3);
         Debug.DrawRay(position2D + offset / 100f + new Vector2(-transform.lossyScale.x, transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Color.green, 0.5f, false);
 
         RaycastHit2D hitUpRight = Physics2D.Raycast(position2D + offset / 100f + new Vector2(transform.lossyScale.x, transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Vector2.Distance(wantedPos, transform.position), 3);
+        //RaycastHit2D hitUpRight = Physics2D.Raycast(position2D + offset / 100f + (transform.lossyScale.x * _directionMovement + transform.lossyScale.y * directionUpMovement) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Vector2.Distance(wantedPos, transform.position), 3);
         Debug.DrawRay(position2D + offset / 100f + new Vector2(transform.lossyScale.x, transform.lossyScale.y) / 2f, new Vector2(wantedPos.x - transform.position.x, wantedPos.y - transform.position.y), Color.yellow, 0.5f, false);
 
 
@@ -469,13 +476,16 @@ public class PlayerController : MonoBehaviour
         }
 
 
-        _wantedPosition = new Vector2(_wantedPosition.x + _currentSpeed * transform.lossyScale.x * Time.deltaTime, _wantedPosition.y);
+        //_wantedPosition = new Vector2(_wantedPosition.x + _currentSpeed * transform.lossyScale.x * Time.deltaTime, _wantedPosition.y);
+        _wantedPosition = new Vector2(_wantedPosition.x + (_currentSpeed * transform.lossyScale.x * Time.deltaTime) * _directionMovement.x,
+            _wantedPosition.y + (_currentSpeed * transform.lossyScale.x * Time.deltaTime) * _directionMovement.y);
     }
 
     private void Start()
     {
         _currentInertie = 0;
         _timeLastDash = -_dashCooldown;
+        _directionMovement = new Vector2(1, 0);
     }
 
     void Update()

@@ -6,7 +6,7 @@ public class OnlyUpObstacle : Obstacle
 {
     private Side _lastSideUsed = Side.None;
 
-    [SerializeField] private float _sensibilityGoingDown = 0f;
+    [SerializeField] private float _sensibilityGoingDown = 0.5f;
     [SerializeField] private float _cooldownUseThisPlateforme = 0.2f;
 
     private float _lastTimeGoDown;
