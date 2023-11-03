@@ -37,6 +37,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _fallSpeedOnWall;
     private Obstacle.Side _leftRightWallJump;
 
+    [SerializeField] private GameObject _puffVFX;
+
     public Vector2 _directionMovement;
 
 
@@ -289,7 +291,8 @@ public class PlayerController : MonoBehaviour
             if (InputManager._jumpKeyDown)
             {
                 _verticalSpeed += _jumpSpeed;
-                
+                Instantiate(_puffVFX,transform.position,Quaternion.identity);
+                FindObjectOfType<AudioManager>().Play("jump");
             }
         }
         else if (_isOnWall)
@@ -297,6 +300,7 @@ public class PlayerController : MonoBehaviour
             if (InputManager._jumpKeyDown)
             {
                 _verticalSpeed = _jumpSpeed;
+                Instantiate(_puffVFX,transform.position,Quaternion.identity);
             };
         }
         else
@@ -305,6 +309,8 @@ public class PlayerController : MonoBehaviour
             {
                 _canDoubleJump = false;
                 _verticalSpeed = _jumpSpeed;
+                Instantiate(_puffVFX,transform.position,Quaternion.identity);
+                FindObjectOfType<AudioManager>().Play("double_jump");
             }
         }
 
@@ -319,6 +325,7 @@ public class PlayerController : MonoBehaviour
     {
         //Debug.Log("ForcedJump");
         _verticalSpeed = _jumpSpeed * jumpPower;
+        Instantiate(_puffVFX,transform.position,Quaternion.identity);
         //_wantedPosition = new Vector2(_wantedPosition.x, _wantedPosition.y + _jumpSpeed * jumpPower * transform.lossyScale.y * Time.deltaTime);
     }
 
@@ -330,6 +337,7 @@ public class PlayerController : MonoBehaviour
             _verticalSpeed = _jumpSpeed * _wallJumpPower;
             _timeLastWallJump = Time.realtimeSinceStartup;
         }
+    
     }
 
 

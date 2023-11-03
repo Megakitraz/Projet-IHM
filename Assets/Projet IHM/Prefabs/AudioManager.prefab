@@ -54,10 +54,10 @@ MonoBehaviour:
     volume: 1
     source: {fileID: 0}
   - name: jump
-    clip: {fileID: 8300000, guid: 691110a30edaf0d4eb5004d7e9281a64, type: 3}
+    clip: {fileID: 8300000, guid: ec4d48afa66eba64fb5c7224a1493c47, type: 3}
     volume: 1
     source: {fileID: 0}
   - name: jump double
-    clip: {fileID: 8300000, guid: 2b6e099eae38e2c4e9f89718509e7231, type: 3}
+    clip: {fileID: 8300000, guid: 870b12d8295ceaf49b65f242ec80819c, type: 3}
     volume: 1
     source: {fileID: 0}

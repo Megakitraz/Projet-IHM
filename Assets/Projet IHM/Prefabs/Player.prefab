@@ -219,6 +219,8 @@ MonoBehaviour:
   _wallJumpPower: 0.5
   _wallJumpDashOutPower: 1.5
   _fallSpeedOnWall: 0.1
+  _puffVFX: {fileID: 341208513811244183, guid: e31bf994143ba4547ab67e5363ed3b3b, type: 3}
+  _directionMovement: {x: 0, y: 0}
 --- !u!61 &6044931800900823026
 BoxCollider2D:
   m_ObjectHideFlags: 0
