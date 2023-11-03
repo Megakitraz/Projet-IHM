@@ -38,6 +38,8 @@ public class PlayerController : MonoBehaviour
     private Obstacle.Side _leftRightWallJump;
 
     [SerializeField] private GameObject _puffVFX;
+    [SerializeField] private GameObject _puffVFXred;
+    [SerializeField] private GameObject _puffVFXblack;
 
     public Vector2 _directionMovement;
 
@@ -300,7 +302,7 @@ public class PlayerController : MonoBehaviour
             if (InputManager._jumpKeyDown)
             {
                 _verticalSpeed = _jumpSpeed;
-                Instantiate(_puffVFX,transform.position,Quaternion.identity);
+                Instantiate(_puffVFXblack,transform.position,Quaternion.identity);
             };
         }
         else
@@ -309,7 +311,7 @@ public class PlayerController : MonoBehaviour
             {
                 _canDoubleJump = false;
                 _verticalSpeed = _jumpSpeed;
-                Instantiate(_puffVFX,transform.position,Quaternion.identity);
+                Instantiate(_puffVFXred,transform.position,Quaternion.identity);
                 FindObjectOfType<AudioManager>().Play("double_jump");
             }
         }

@@ -11,7 +11,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Projet IHM/Scenes/Menu.unity
     guid: 44c6a7879b95db34fb689745babfd094
-  - enabled: 1
+  - enabled: 0
     path: Assets/Projet IHM/Louan/LevelTest.unity
     guid: cd71e6142784c1a4c958c7f3dff91532
+  - enabled: 1
+    path: Assets/Projet IHM/Scenes/Demo.unity
+    guid: b757cf22766d7264598ee6318c872b06
+  - enabled: 1
+    path: Assets/Projet IHM/Scenes/GameOver.unity
+    guid: ec536eee768f31a41805a49649eb64a3
   m_configObjects: {}
