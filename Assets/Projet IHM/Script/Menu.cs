@@ -12,6 +12,11 @@ public class Menu : MonoBehaviour
 
     public void Play()
     {
+        FindObjectOfType<AudioManager>().Stop("lose");
+        FindObjectOfType<AudioManager>().Stop("death");
+        FindObjectOfType<AudioManager>().Stop("crowd");
+        FindObjectOfType<AudioManager>().Stop("fireworks");
+        FindObjectOfType<AudioManager>().Play("main");
         SceneManager.LoadScene(1);
     }
 

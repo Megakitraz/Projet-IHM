@@ -35,6 +35,9 @@ public class PlayerHealth : MonoBehaviour
 
     private void PlayerDying()
     {
+        FindObjectOfType<AudioManager>().Play("death");
+        FindObjectOfType<AudioManager>().Play("lose");
+        FindObjectOfType<AudioManager>().Stop("main");
         SceneManager.LoadScene(2);
     }
 

@@ -302,6 +302,7 @@ public class PlayerController : MonoBehaviour
             if (InputManager._jumpKeyDown)
             {
                 _verticalSpeed = _jumpSpeed;
+                FindObjectOfType<AudioManager>().Play("wall_jump");
                 Instantiate(_puffVFXblack,transform.position,Quaternion.identity);
             };
         }

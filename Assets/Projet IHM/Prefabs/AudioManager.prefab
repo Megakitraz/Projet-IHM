@@ -47,17 +47,46 @@ MonoBehaviour:
   sounds:
   - name: boing
     clip: {fileID: 8300000, guid: b325da846e513464c9574fa02c7cca38, type: 3}
+    loop: 0
     volume: 1
     source: {fileID: 0}
   - name: death
     clip: {fileID: 8300000, guid: 722da9f2cbf90624196e3f985ee1fe1c, type: 3}
+    loop: 0
     volume: 1
     source: {fileID: 0}
   - name: jump
     clip: {fileID: 8300000, guid: ec4d48afa66eba64fb5c7224a1493c47, type: 3}
+    loop: 0
     volume: 1
     source: {fileID: 0}
-  - name: jump double
+  - name: double_jump
     clip: {fileID: 8300000, guid: 870b12d8295ceaf49b65f242ec80819c, type: 3}
+    loop: 0
+    volume: 1
+    source: {fileID: 0}
+  - name: wall_jump
+    clip: {fileID: 8300000, guid: d81d0ee2206b36041884b84d4ca60e3a, type: 3}
+    loop: 0
+    volume: 1
+    source: {fileID: 0}
+  - name: lose
+    clip: {fileID: 8300000, guid: b1bf8946070366d41b14d6d273e6eab0, type: 3}
+    loop: 1
+    volume: 1
+    source: {fileID: 0}
+  - name: fireworks
+    clip: {fileID: 8300000, guid: e4c29b8f37eb60641b94db5bdeba0de8, type: 3}
+    loop: 0
+    volume: 1
+    source: {fileID: 0}
+  - name: main
+    clip: {fileID: 8300000, guid: 86f70042aa804374a8c83faa20faf6f1, type: 3}
+    loop: 1
+    volume: 0.5
+    source: {fileID: 0}
+  - name: crowd
+    clip: {fileID: 8300000, guid: b9dee77ff2097f249939770dcb14ef2a, type: 3}
+    loop: 0
     volume: 1
     source: {fileID: 0}
