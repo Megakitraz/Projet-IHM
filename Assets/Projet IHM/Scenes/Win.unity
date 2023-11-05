@@ -5989,7 +5989,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: BE EVER MORE SPECIAL
+  m_text: BECOME EVEN MORE SPECIAL
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c3d4cd3ebf1f6c64eb21a565d5d417b7, type: 2}
   m_sharedMaterial: {fileID: 5281294937471491714, guid: c3d4cd3ebf1f6c64eb21a565d5d417b7, type: 2}
@@ -6052,7 +6052,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -111.15939, y: 0, z: -103.0258, w: 0}
+  m_margin: {x: -169.87009, y: 0, z: -175.47728, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
