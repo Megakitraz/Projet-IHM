@@ -1057,7 +1057,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3155937119020169301, guid: 68e48e32bfe7a3745a2911f97e4354a3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.03
+      value: -1.62
       objectReference: {fileID: 0}
     - target: {fileID: 3155937119020169301, guid: 68e48e32bfe7a3745a2911f97e4354a3, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3613,7 +3613,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 18606733542264549, guid: 59fcf42e5c72c7a4ba2e6e2e2e0032dc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.77
+      value: 0.97
       objectReference: {fileID: 0}
     - target: {fileID: 18606733542264549, guid: 59fcf42e5c72c7a4ba2e6e2e2e0032dc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3621,7 +3621,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1084050360799949145, guid: 59fcf42e5c72c7a4ba2e6e2e2e0032dc, type: 3}
       propertyPath: ShapeModule.m_Scale.x
-      value: 7
+      value: 6.8
       objectReference: {fileID: 0}
     - target: {fileID: 1084050360799949145, guid: 59fcf42e5c72c7a4ba2e6e2e2e0032dc, type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
@@ -3685,11 +3685,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8795643583064133490, guid: 59fcf42e5c72c7a4ba2e6e2e2e0032dc, type: 3}
       propertyPath: m_LocalScale.x
-      value: 7.311405
+      value: 6.89925
       objectReference: {fileID: 0}
     - target: {fileID: 8795643583064133490, guid: 59fcf42e5c72c7a4ba2e6e2e2e0032dc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.7746
+      value: 0.9808
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
