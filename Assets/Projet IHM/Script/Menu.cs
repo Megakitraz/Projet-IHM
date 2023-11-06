@@ -5,10 +5,23 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
-    void Start()
+    void Update()
     {
-        
+        if (InputManager._jumpKeyDown)
+        {
+            FindObjectOfType<AudioManager>().Stop("lose");
+            FindObjectOfType<AudioManager>().Stop("death");
+            FindObjectOfType<AudioManager>().Stop("crowd");
+            FindObjectOfType<AudioManager>().Stop("fireworks");
+            FindObjectOfType<AudioManager>().Play("main");
+            SceneManager.LoadScene(1);
+        }
+        if (InputManager._dashKeyDown)
+        {
+            Application.Quit();
+        }
     }
+
 
     public void Play()
     {
